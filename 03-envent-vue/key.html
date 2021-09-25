@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>键盘监听</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h2>this is {{name}}</h2>
+    <!--
+     keydown 按下去就触发
+     keyup 按下去谈起了后才触发
+     -->
+    <input type="text" placeholder="按下回车监听(键盘码）" @keyup="toInfo">
+    <hr>
+    <!--
+    常用别名
+    enter 回车
+    delete 删除
+    esc  退出
+    space 空格
+    tap 换行
+    up 上
+    down 下
+    left 左
+    right 右
+    多个按键时候  可以连续修饰
+  -->
+    <!-- enter 指的是回车 -->
+    <input type="text" placeholder="按下回车监听（VUE)" @keyup.enter="toMsg">
+    <!--
+       单词数字使用按键名（第一个大写）
+       多个单词的全小写单词间用-隔开
+    -->
+    <hr>
+    <input type="text" placeholder="按下回车监听（VUE-按键名)" @keyup.caps-lock="Msg($event,'capslock')">
+    <hr>
+    <!-- tab 会切走焦点 所以用 keydown -->
+    <input type="text" placeholder="按下回车监听（VUE-tap)" @keydown.tab="Msg($event,'tab')">
+    <!-- 系统修饰键： alt\ctrl\shift\win
+     keyup: 按下的同时按下其他键，放开其键的同时生效，否则无效
+     keydown：正常
+     -->
+    <hr>
+    <input type="text" placeholder="按下回车监听（VUE-系统)" @keydown.ctrl="Msg($event,'ctrl')">
+    <hr>
+    <input type="text" placeholder="按下回车监听（VUE-多个)" @keydown.ctrl.c="Msg($event,'复制')">
+
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            name: "myLove"
+        },
+        methods: {
+            toInfo(e) {
+                console.log(e.key, e.keyCode)
+                /*  获取按键编码 13是回车 */
+                if (e.keyCode !== 13) return
+                alert(e.target.value)
+            },
+            toMsg(e) {
+                alert(e.target.value)
+            },
+            Msg(e, msg) {
+                console.log(e.key)
+                console.log(msg)
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

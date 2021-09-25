@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h1>插值语法</h1>
+    <h3>Hello {{name}}</h3>
+    <hr/>
+    <!-- 原始指令语法使用 v-bind 可以将 "" 中的内容当中 JS表达式执行-->
+    <!-- v-bind: 可以简写成 :-->
+    <h1>指令语法</h1>
+    <a v-bind:href="url">Go</a>
+</div>
+
+<script type="application/javascript">
+    new Vue({
+        el: "#root",
+        data: {
+            name: "World",
+            url: "http://hll520.cn"
+        }
+    })
+</script>
+
+</body>
+</html>
