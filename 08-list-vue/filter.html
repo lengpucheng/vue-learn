@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表过滤</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h2>Watch 过滤</h2>
+    <input type="text" v-model="key" placeholder="请输入名字">
+    <ul>
+        <li>id-name-age</li>
+        <!-- 使用 for 循环   key 用于给节点定义一个唯一标识id 用于其他的控制  :是动态绑定  非:即循环出来的完全一样 -->
+        <li v-for="(person) in filPersons" :key="person.id">{{person.id}}-{{person.name}}-{{person.age}}
+            <input type="text">
+        </li>
+    </ul>
+    <hr>
+    <h2>计算属性 过滤</h2>
+    <input type="text" v-model="key" placeholder="请输入名字">
+    <ul>
+        <li>id-name-age</li>
+        <!-- 使用 for 循环   key 用于给节点定义一个唯一标识id 用于其他的控制  :是动态绑定  非:即循环出来的完全一样 -->
+        <li v-for="(person) in  comFilPerson" :key="person.id">{{person.id}}-{{person.name}}-{{person.age}}
+            <input type="text">
+        </li>
+    </ul>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            key: "",
+            filPersons: [],
+            persons: [
+                {id: '001', name: "周杰伦", age: 18, sex: "男"},
+                {id: '002', name: "周冬雨", age: 21, sex: "女"},
+                {id: '004', name: "马冬梅", age: 29, sex: "女"},
+                {id: '005', name: "温兆伦", age: 19, sex: "男"},
+            ],
+        },
+        watch: {
+            key: {
+                /* 一开始立即执行 */
+                immediate: true,
+                handler(val) {
+                    console.log(val)
+                    /* 空串是任何字符串的子串  === 空集 */
+                    /* filter 不会影响原先的数组   条件返回true 则保留  反正过滤 */
+                    this.filPersons = this.persons.filter((p) => {
+                        return p.name.includes(val)
+                    })
+                },
+            },
+        },
+        computed: {
+            comFilPerson() {
+                // 返回计算结束后的结果作为数据  当计算依赖值变化时会改变
+                return this.persons.filter((p) => {
+                    return p.name.includes(this.key)
+                })
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

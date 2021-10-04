@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>样式绑定</title>
+    <style>
+        .basic {
+            border: 4px solid red;
+            height: 150px;
+            width: 150px;
+        }
+
+        .normal {
+            background: bisque;
+        }
+
+        .red {
+            background: hotpink;
+        }
+
+        .green {
+            background: darkseagreen;
+        }
+
+    </style>
+    <script type="application/javascript" src="../js/vue.js"></script>
+
+</head>
+<body>
+<div id="root">
+    <!-- 用于类名不确定的情况 -->
+    <div class="basic" :class="mod" @click="change">{{name}}-字符串绑定</div>
+    <!-- 用于类名和数目都不确定的情况 -->
+    <div class="basic" :class="classArr" @click="change">{{name}}-数组绑定</div>
+    <!-- 用于类名和数目都确定 但是否开启不确定的情况的情况 -->
+    <div class="basic" :class="classObj" @click="change">{{name}}-对象绑定</div>
+    <!-- style 对象kv 写法 -换成驼峰 -->
+    <div class="basic" :style="styleObj" @click="change">{{name}}-KV绑定</div>
+</div>
+
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            name: "样式绑定",
+            mod: "normal",
+            classArr: ["normal", "red","green"],
+            classObj:{
+                red:false,
+                green:true,
+                normal:false,
+            },
+            styleObj:{
+                fontSize:"50px"
+            }
+        },
+        methods: {
+            change() {
+                let num=Math.floor(Math.random()*3)
+                this.mod =this.classArr[num]
+            },
+            click(){
+
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

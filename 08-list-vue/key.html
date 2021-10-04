@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表Key渲染</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+
+    <!--
+     更新 diff 对比时 优先对比key
+     当使用index 进行前序插入或者打乱顺序时 key 可能未变 只会更新 改变的部分 虚拟DOM 中其他部分会被复用
+     当使用唯一标识 由于key唯一标识  即使打乱顺序  也可以复用  因此不会出现错序
+
+     若不显示声明 key  默认使用 index
+     -->
+    <h2>index-key</h2>
+    <ul>
+        <li>id-name-age</li>
+        <!-- 使用 for 循环   key 用于给节点定义一个唯一标识id 用于其他的控制  :是动态绑定  非:即循环出来的完全一样 -->
+        <li v-for="(person,index) in persons" :key="index">{{person.id}}-{{person.name}}-{{person.age}}
+            <input type="text">
+        </li>
+    </ul>
+    <button @click.once="add">添加</button>
+    <hr>
+    <h2>id-key</h2>
+    <ul>
+        <li>id-name-age</li>
+        <!-- 使用 for 循环   key 用于给节点定义一个唯一标识id 用于其他的控制  :是动态绑定  非:即循环出来的完全一样 -->
+        <li v-for="(person) in persons" :key="person.id">{{person.id}}-{{person.name}}-{{person.age}}
+            <input type="text">
+        </li>
+    </ul>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            persons: [
+                {id: '001', name: "张山", age: 18},
+                {id: '002', name: "李思", age: 21},
+                {id: '003', name: "王武", age: 19},
+            ],
+        },
+        methods: {
+            add() {
+                const per = {id: '004', name: "赵柳", age: 22}
+                /*  unshift向前添加  */
+                this.persons.unshift(per)
+
+                const peo = {id: '005', name: "钱岜", age: 16}
+                /* push 未后续插入 */
+                this.persons.push(peo)
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>
