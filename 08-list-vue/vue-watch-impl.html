@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>监控</title>
+</head>
+<body>
+<script type="application/javascript">
+    let data = {}
+
+    /* 创建一个监视对象 用于data中的属性变化 */
+    const _data = new Observer(data)
+    const vm = {}
+    vm._data = data = _data
+
+
+    function Observer(obj) {
+        // 汇总所有属性形成一个 arrays
+        const keys = Object.keys(obj);
+        // 遍历
+        keys.forEach((k) => {
+            Object.defineProperty(this, k, {
+                get() {
+                    return obj[k]
+                },
+                set(val) {
+                    console.log(`${k}被修改，需要解析模板，生成新的虚拟DOM，解析DIFF。。。。。。`)
+                    obj[k] = val
+                }
+            })
+        })
+    }
+</script>
+</body>
+</html>

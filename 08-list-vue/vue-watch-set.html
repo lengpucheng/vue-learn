@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VUE-SET</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!-- VUE更新的内存中的数据  监视的对象是用地址监控的 -->
+    <button @click="addSex">添加性别</button>
+    <h2>学生信息</h2>
+    <p>姓名：{{student.name}}</p>
+    <p>年龄：{{student.age}}</p>
+    <!-- sex未空即假 -->
+    <p v-if="student.sex">性别：{{student.sex}}</p>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            student: {
+                name: "STU",
+                age: "21",
+            },
+        },
+        methods: {
+           addSex(){
+               Vue.set(this.student,'sex','男')
+           }
+        }
+    })
+
+    vm.$mount('#root')
+    /* 向vue的data中添加之前不存在的属性，并添加数据代理 （只能向响应式对象中添加） */
+    /* 不可以向vm或data中添加数据 只能向vm data 中的对象添加响应式数据 */
+    // vm.$set(vm.student,'sex','男')
+    // Vue.set(vm.student,'sex','男')
+</script>
+</body>
+</html>
