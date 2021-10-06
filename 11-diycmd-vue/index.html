@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+
+</head>
+<body>
+<div id="root">
+    <button @click="num++">{{num}}++</button>
+    <p v-text="num"></p>
+    10被的num 使用自定义 v-big10
+    <p v-big10="num"></p>
+    <input type="number" v-find="num">
+    <hr>
+
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            num: 0
+        },
+        methods: {},
+        /* 其中可以配置自定义指令 使用时前面加  v- */
+        /* 所有指令函数中的 this均为 windows */
+        directives: {
+            /* 参数1为实际的 html DOM */
+            /* 参数2为绑定对象 其中 .value 为参数 */
+            /* 当且 第一次渲染 或 模板被重新渲染解析时（当指令关联的值更新时候会导致模板重新渲染) */
+            /* 等同于  find中的 bind和update */
+            big10(element, binding) {
+                console.log(element)
+                console.log(binding)
+                element.innerText = binding.value * 10
+            },
+            find: {
+                /* 当指令与元素成功绑定时 使用非对象模式  默认是此函数和update */
+                bind(element, binding) {
+                    console.log("bind")
+                    console.log(element)
+                    console.log(binding)
+                    element.innerText = binding.value * 10
+                },
+                /* 指令所在的元素被插入页面时调用 */
+                inserted(element, binding) {
+                    console.log("ins")
+                    console.log(element)
+                    console.log(binding)
+                    element.focus()
+                },
+                /* 指令所在的元素被重新解析时调用 */
+                update(element, binding) {
+                    console.log("put")
+                    console.log(element)
+                    console.log(binding)
+                    element.value = binding.value * 10
+                    element.focus()
+                },
+                /* 多个单词可以用-链接 然后用 '' 包裹 */
+                'num-10'(element, binding) {
+
+                }
+                ,
+            }
+        }
+    })
+    vm.$mount('#root')
+
+    /* 定义全局指令  所有VUE中都可以使用 */
+    Vue.directive('find-bind', {})
+
+</script>
+</body>
+</html>
