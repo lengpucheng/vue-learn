@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VUE底层监视</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!-- VUE更新的内存中的数据  监视的对象是用地址监控的 -->
+    <button @click="updateVal">修改值</button>
+    <button @click="updateObj">修改内存地址</button>
+    <ul>
+        <li>id-name-age</li>
+        <!-- 使用 for 循环   key 用于给节点定义一个唯一标识id 用于其他的控制  :是动态绑定  非:即循环出来的完全一样 -->
+        <li v-for="(person) in  persons" :key="person.id">{{person.id}}-{{person.name}}-{{person.age}}
+            <input type="text">
+        </li>
+    </ul>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            persons: [
+                {id: '001', name: "周杰伦", age: 18, sex: "男"},
+                {id: '002', name: "周冬雨", age: 21, sex: "女"},
+                {id: '004', name: "马冬梅", age: 29, sex: "女"},
+                {id: '005', name: "温兆伦", age: 19, sex: "男"},
+            ],
+        },
+        methods: {
+            updateVal() {
+                this.persons[0].age = 32
+                this.persons[0].name = "周深"
+                this.persons[0].sex = "女"
+            },
+            updateObj() {
+                this.persons[0] = {id: '001', name: "周深", age: 32, sex: "女"}
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

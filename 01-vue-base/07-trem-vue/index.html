@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>条件渲染</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!-- 频繁切换时用 v-show -->
+    <!-- v-show 条件渲染  后面为 bool 或条件表达式  为false会变成 display=non-->
+    <h2 v-show="false">this is {{name}}</h2>
+    <h2 v-show="true">this is {{name}}</h2>
+    <!-- v-if  为false时 整个结构都不会存在-->
+    <h2 v-if="false">this is {{name}}</h2>
+    <h2 v-if="true">this is {{name}}</h2>
+    <!-- if-else if 进入任何一个if后就不会判断后续的else -->
+    <div v-if="n===1">Angular</div>
+    <div v-else-if="n===2">React</div>
+    <div v-else-if="n===3">Boot</div>
+    <div v-else-if="n===4">Vue</div>
+    <!-- else 为前置条件都不符合时 进入 -->
+    <div v-else>JavaScript</div>
+    <!-- v-else 和 v-else-if 必须有v-if -->
+    <!-- 若被 v-else 结束后 无法再跟 必须重新v-if 开头 -->
+    <hr>
+    <button @click="add">n+1</button>
+    <button @click="n=0">n=0</button>
+
+    <hr>
+    <!-- 使用 template 可以无结构替代 div 不侵入代码  可以添加 v-if 或其他 -->
+    <template v-if="n===5">
+        <h2>Web After</h2>
+        <h2>JS</h2>
+        <h2>HTML</h2>
+        <h2>CSS</h2>
+    </template>
+
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            name: "VUE",
+            n: 0,
+        },
+        methods: {
+            add() {
+                if (this.n === 5) {
+                    this.n=0
+                }else {
+                    this.n++
+                }
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

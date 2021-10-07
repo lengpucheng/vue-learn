@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>深度监视</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h2>a是{{args.a}}</h2>
+    <!-- 当事件足够简单时 可以直接使用表达式  -->
+    <hr>
+    <button @click="args.a++">切换(表达式)</button>
+    <hr>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            args: {
+                a: 1,
+                b: 2,
+                c: 3,
+            }
+        },
+        /* 监听对象 */
+        watch: {
+            /* 监听isTrue属性 */
+            /* 监视的属性必须存在 若不存在也不会出问题但是无法执行 */
+            /* 实际上的key应该是字符串 若只是一个单词可以不用引号 */
+            'args.a': {
+                /* 单独监听a */
+                handler(n, o) {
+                    console.log(n, o)
+                }
+            },
+            /* 监听的是args的地址，若args的地址不变，堆空间内存发生变化不会被监视 */
+            args: {
+                /* 开启deep即深度监视 否则watch只能监听其对应的 地址变化   默认不监测内部值的改变 */
+                deep: true,
+                handler(n, o) {
+                    console.log(n, o)
+                }
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

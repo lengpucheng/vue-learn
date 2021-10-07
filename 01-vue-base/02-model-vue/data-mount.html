@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<!-- View 视图层   {{}}中的为 vm中的一切属性 -->
+<div id="root">
+    <input type="text" v-model="value"/>
+    <hr>
+    <input type="password" v-model="value"/>
+</div>
+<script type="application/javascript">
+
+    /* ViewModel 数据模型层 */
+    const v = new Vue({
+        /* Model 数据层 */
+        data() {
+            /* 数据改成返回值   调用者为 vue 实例   可以省略函数名 直接 data(){} */
+            console.log("@@@@", this)
+            return {
+                value: ""
+            }
+        }
+    });
+    /*  将VUE实例挂载到 容器 */
+    v.$mount('#root')
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>姓名案例</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    姓：<input type="text" v-model="xin"/>
+    <hr>
+    名：<input type="text" v-model="min">
+    <hr>
+    姓名(插值)：{{xin.slice(0, 3)}}-{{min}}
+    <hr>
+    姓名(method)：{{name(xin, min)}}
+    <hr>
+    姓名(计算属性)：{{fullName}}
+    <hr>
+    姓名(计算属性)：<input type="password" v-model="fullName">
+    <!--
+        计算属性有缓存
+        method每次读取都会调用
+
+    -->
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            xin: "zhang",
+            min: "shang",
+        },
+        methods: {
+            name(xin, min) {
+                return xin + '-' + min
+            }
+        },
+        /* 计算属性 不属于data 可以当属性使用
+        *
+        * 计算属性会使用缓存 使用无变化时会直接从缓存读取
+        *
+        *  */
+        computed: {
+            /* 计算属性仅仅只会变成vue的一个属性 并不是对象 */
+            fullName: {
+                // 当且仅当 初次调用或被计算值发生变化时会重新调用
+                get() {
+                    // 当有人读取fullName 就会调用get方法
+                    // 非箭头函数的this是vue
+                    return this.xin + '-' + this.min
+                },
+                set(value) {
+                    let split = value.split('-');
+                    this.xin = split[0]
+                    this.min = split[1]
+                }
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

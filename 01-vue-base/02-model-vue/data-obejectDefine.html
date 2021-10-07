@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据定义</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+
+<script type="application/javascript">
+    let stu = {
+        name: "Student",
+        gender: "man",
+    }
+    let number = 10
+
+
+    /* 给指定对象添加属性  默认是不可以被遍历和获取和删除 */
+    Object.defineProperty(stu, 'num', {
+        value: number,
+        // 是否可便利获取
+        enumerable: true,
+        // 是否可修改
+        writable: true,
+        // 是否可删除
+        configurable: true,
+    })
+    /* 使用get set 可以动态传递值 */
+    Object.defineProperty(stu, 'age', {
+        // 当尝试读取数据时候 会调用get函数获取值 不能和 value 同时使用
+        get: function () {
+            return number
+        },
+        // 当尝试修改时会调用  set:function(){}  ----> 可以直接简写为 set(){}
+        set(value) {
+            number = value
+        }
+    })
+
+
+    console.log(stu)
+    console.log(Object.keys(stu))
+</script>
+</body>
+</html>

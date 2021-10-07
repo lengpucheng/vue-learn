@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单交互</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!-- 指定submit 在表单提交的时候触发  并使用prevent修饰 取消 默认事件 -->
+    <form @submit.prevent="post">
+        <!--  label 用于将标签内的其他内容与输入框联系 -->
+        <label>
+            <!-- 使用label后点击文字也可以将焦点聚焦到输入框 -->
+            账号: <input type="text" v-model.trim="user.account">
+        </label><br/><br/>
+        密码: <input type="password" v-model.trim="user.password">
+        <br/><br/>
+        性别:
+        男<input type="radio" name="sex" v-model="user.sex" value="male">
+        女<input type="radio" name="sex" v-model="user.sex" value="female">
+        <br/><br/>
+        <!-- 使用 number 修饰来只获取数字 非数字内容将忽略  若使用默认的 即使type为number 接收的数据也为字符串 -->
+        年龄: <input type="number" v-model.number="user.age">
+        <br/><br/>
+        爱好:
+        吃饭<input type="checkbox" v-model="user.hobby" value="cf">
+        睡觉<input type="checkbox" v-model="user.hobby" value="sj">
+        学习<input type="checkbox" v-model="user.hobby" value="xx">
+        <br/><br/>
+        学历:
+        <select v-model="user.learn">
+            <option value="">请选择</option>
+            <option value="xx">小学</option>
+            <option value="cz">初中</option>
+            <option value="gz">高中</option>
+            <option value="dx">本科</option>
+            <option value="adx">本科以上</option>
+        </select>
+        <br/><br/>
+        备注:
+        <!-- 使用lazy修饰后 当且仅当 组件失去焦点时 才会更新 -->
+        <textarea v-model.lazy="user.memo"></textarea>
+        <br/><br/>
+        <!-- 当 checkbox 未设置 value或接受 类型为字符串时 默认 返回 checked-->
+        <input type="checkbox" v-model="user.agree"/>阅读并接受<a href="index.html">《协议》</a>
+        <br/><br/>
+        <button>提交</button>
+    </form>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            user: {
+                account: '',
+                password: '',
+                sex: '',
+                age: '',
+                hobby: [],
+                learn: '',
+                memo: '',
+                agree: '',
+            },
+        },
+        methods: {
+            post() {
+                // JSON stringify 可以将数据转换成 json
+                let user = JSON.stringify(this.user);
+                console.log(user)
+                alert(user)
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>

