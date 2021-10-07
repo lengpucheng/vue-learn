@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>生命周期</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!--    &lt;!&ndash; JS表达式中 对象中k与v同名时 可以省略k &ndash;&gt;-->
+    <!--    <h2 :style="{opacity}">{{name}}</h2>-->
+    <!--    <p>-->
+    <!--        生命周期从开始到结束会预留一些函数进行调用 被调用的函数成为HOOK钩子-->
+    <!--        当到达起钩的时间 会自动调用钩子-->
+    <!--    </p>-->
+</div>
+<script type="application/javascript">
+    const vm = new Vue({
+        /* 与mount 同理 */
+        el: "#root",
+        /* 容器中可以什么都不写 用一个模板放进去  只能允许一个根节点*/
+        /* 使用template 将会用template 完全替换外部的跟节点 */
+        /* 不可以使用 <template></template>作为根标签 */
+        template: `
+          <div>
+          <h2 :style="{opacity}">{{ name }}</h2>
+          <p>
+            生命周期从开始到结束会预留一些函数进行调用 被调用的函数成为HOOK钩子
+            当到达起钩的时间 会自动调用钩子
+          </p>
+          <p>{{ n }}</p>
+          <button @click="n++">{{ n }}++</button>
+          <button @click="destroy">销毁</button>
+          <button @click="add">显示</button>
+          <p>{{ str }}</p>
+          <p>其中 mount 和 beforeDestroy 是初始化页面和销毁前 都是最重要的</p>
+          <p>分别用于 订阅消息开启定时器网络请求  和  取消订阅关闭定时器更新网络</p>
+          </div>
+        `,
+        data: {
+            name: "hello wolrd",
+            opacity: 1,
+            n: 10,
+            str: "",
+        },
+        methods: {
+            /* 若在插值中掉方法且修改数据 会导致重新渲染 导致继续掉方法 */
+            // change() {
+            //     setInterval(() => {
+            //         this.opacity -= 0.01
+            //         if (this.opacity <= 0) {
+            //             this.opacity = 1
+            //         }
+            //     }, 16)
+            // }
+            destroy() {
+                /* 销毁将解绑VM全部指令和自定义事件监视器  原生变得的dom事件 vue销毁后依然存在 */
+                console.log("销毁")
+                this.$destroy()
+            },
+            add() {
+                this.str = JSON.stringify(this)
+            }
+        },
+        /* VUE 初始化 数据代理创建之前 但还没有加载 自定义的数据和方法 */
+        beforeCreate() {
+            console.log("beforeCreate")
+        },
+        /* VUE 加载自定义数据和方法 还没有解析DOM */
+        created() {
+            console.log("created")
+        },
+        /* VUE解析完毕 DOM 放入虚拟DOM 还没有渲染到页面上   其中对DOM的操作会在之后被虚拟DOM覆盖 导致失效*/
+        beforeMount() {
+            console.log("beforeMount")
+        },
+        /* 将解析的虚拟DOM放入真实DOM  并存入到虚拟DOM中  这里操作的DOM会生效 但不建议*/
+        /* 把真实的初始DOM元素放入页面后 调用挂载   只会被调用一次*/
+        /* 一般用于订阅消息 发送请求等 */
+        mounted() {
+            console.log("mounted")
+            setInterval(() => {
+                this.opacity -= 0.01
+                if (this.opacity <= 0) {
+                    this.opacity = 1
+                }
+            }, 16)
+        },
+        /* 每当页面中的（使用）数据更新时 在数据变化后 页面渲染前调用  此时页面还是旧页面  页面和数据不同步  */
+        beforeUpdate() {
+            console.log("beforeUpdate")
+        },
+        /* 每当页面中（使用）的数据更新时 页面渲染后调用  */
+        updated() {
+            console.log("updated")
+        },
+        /* 当调用 $destroy() 时 实际销毁前都存在 其中的所有事件和渲染数据都存在 可以在这里取消定时器等  */
+        /* 由于之后不会再进行页面渲染  因此所有对数据的更新  都不会更新页面 */
+        beforeDestroy() {
+            console.log("beforeDestroy")
+        },
+        /* vue 实例中数据和监视器全部都已经销毁  */
+        destroyed() {
+
+        }
+
+    })
+    vm.$mount('#root')
+
+    /* 设置定时器  16毫秒执行一次 */
+    // setInterval(() => {
+    //     vm.opacity -= 0.01
+    //     if (vm.opacity <= 0) {
+    //         vm.opacity = 1
+    //     }
+    // }, 16)
+</script>
+</body>
+</html>
