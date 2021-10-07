@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VueComponents</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+
+</head>
+<body>
+<div id="root">
+    <!-- 使用 app 时 会自动生成 new app() -->
+    <app></app>
+</div>
+<script type="application/javascript">
+    /* chn 和 wh 返回的构造函数形式上相同 实际上是在不同闭包环境中的 函数 */
+    /* 类似与抽象工厂模式  传入参数 返回对应的构造方法 每个构造方法都是构造 vueComponent 但是因为参数不一样（闭包环境） 所以虽然形式上相同 但是不是同一个函数 */
+    const chn = Vue.extend({})
+    const wh = Vue.extend({})
+    /* 在每个component中的this 是当前this本身 其和 vm 构造相同 */
+
+    /* app 本质是一个钩子函数  extend 中的 参数 被用于构造  类型为 vueComponent */
+    /* 每一次调用 extend 返回的都是一个全新的 vueComponent */
+    const app = Vue.extend({
+        template: `
+          <div>
+          <chn></chn>
+          <wh></wh>
+          </div>
+        `,
+        components: {
+            chn,
+            wh
+        }
+    });
+
+    /* 组件的实例对象 也可以获取 可以通过new 获取 */
+    let vc = new app()
+
+
+    let vm = new Vue({
+        el: "#root",
+        components: {
+            app
+        }
+    })
+
+    /* 其中 vc 在 vm的 child中 */
+    let children = vm.children
+
+    /*
+    *   vc 都 vm都有
+    *   但vc 不能使用 el 绑定
+    *
+    * */
+
+</script>
+</body>
+</html>

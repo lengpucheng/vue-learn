@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件嵌套</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <!-- vue 中内嵌根组件 app 因此容器留空 -->
+</div>
+<script type="application/javascript">
+    const student = Vue.extend({
+        template: `
+          <div>
+          <h1>this is School</h1>
+          <p>name: {{ name }}</p>
+          <p>age: {{ age }}</p>
+          </div>
+        `,
+        data() {
+            return {
+                name: "lengpucheng",
+                age: 21,
+            }
+        },
+    })
+    const school = Vue.extend({
+        template: `
+          <div>
+          <h2>School</h2>
+          <p>name:{{ name }}</p>
+          <p>peoples:{{ num }}</p>
+          <div>
+            <h3>学生</h3>
+            <student></student>
+          </div>
+          </div>
+        `,
+        data() {
+            return {
+                name: "wtu",
+                num: 1
+            }
+        },
+        components: {
+            student
+        }
+    })
+    const city = Vue.extend({
+        template: `
+          <div>
+          <h1>city</h1>
+          <p>city:{{ name }}</p>
+          <p>address:{{ address }}</p>
+          <p>学校</p>
+          <school></school>
+          </div>
+        `,
+        data() {
+            return {
+                name: "wuhan",
+                address: "hubei-china",
+            }
+        },
+        /* 组件嵌套 在组件中注册的组件 组件可以使用被注册组件 */
+        components: {
+            school
+        }
+    })
+    const company = Vue.extend({
+        template: `
+          <div>
+          <h1>company</h1>
+          <p>companyName:{{ name }}</p>
+          <p>companyNum:{{ num }}</p>
+          <p>员工</p>
+          <student></student>
+          </div>
+        `,
+        data() {
+            return {
+                name: "cict",
+                num: 1
+            }
+        },
+        components: {
+            student
+        }
+
+    })
+    // 通常的跟组件
+    const app = Vue.extend({
+        name: "app",
+        template: `
+          <div>
+          <p>城市数据</p>
+          <city></city>
+          <hr>
+          <p>公司数据</p>
+          <company></company>
+          </div>
+        `,
+        components: {
+            city,
+            company
+        }
+    })
+    // Vue管理对象
+    new Vue({
+        el: "#root",
+        /* 直接嵌入 app 根组件  */
+        template: `
+          <app></app>
+        `,
+        components: {
+            app
+        }
+    })
+</script>
+</body>
+</html>

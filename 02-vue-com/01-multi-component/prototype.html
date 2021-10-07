@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prototype</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h1> VUE 中 vm的原型对象 和 vc 原型对象的原型对象相同</h1>
+</div>
+<script type="application/javascript">
+    // 构造函数
+    function Dome() {
+        this.a = 1
+        this.b = 2
+    }
+
+    const d = new Dome()
+
+    /* 显式获取 原型对象 */
+    console.log(Dome.prototype)
+    /* 隐式获取 原型对象 */
+    console.log(d.__proto__)
+
+    /* 使用代码改变原型对象 追加属性  */
+    Dome.prototype.x = 99
+
+
+    console.log(d)
+    /* 调用的时候 显示获取 原型属性 */
+    console.log(d.__proto__.x)
+    /* 原型对象的属性 实例上都有 */
+    console.log(d.x)
+
+    /* VUE */
+    const spc = Vue.extend({
+        name: "spc",
+        template: `
+          <div>
+
+          </div>
+        `,
+        data() {
+            return {}
+        }
+    })
+
+    const vm = new Vue({
+        el: "#root",
+        data: {},
+    })
+
+    /*
+    *  1.类型（可构造的构造函数）的 prototype 指向其 原型对象 （父类的对象）
+    *  2.类型实例的 __proto__ 和类型的 prototype 相同 指向原型对象 （父类的对象）
+    *  3.一切的类型若没有 原型对象 则默认为 object
+    *  4.object的原型对象为 null
+    *  5.原型对象的所有属性和函数  在所有类型实例中都存在 可以直接调用
+    *
+    *  实际中 vueComponent 的 原型对象 的原型对象（因为原型对象是对象不是类型 所有是__proto__) 其实是vue的原型对象 即 vueComponent 继承于 vue
+    *  */
+    console.log(spc.prototype.__proto__ === Vue.prototype)
+</script>
+</body>
+</html>

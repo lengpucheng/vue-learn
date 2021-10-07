@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非单文件基本组件</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h1>{{msg}}</h1>
+    <hr>
+    <!-- 3. 编写组件标签 -->
+    <school></school>
+    <hr>
+    <person></person>
+    <hr>
+    <p>组件复用 不会相互影响</p>
+    <person></person>
+    <hr>
+    <hello></hello>
+    <hr>
+    <com></com>
+</div>
+<!-- 使用组件三部
+ 1. 创建组件 Vue.extend
+ 2. 注册组件
+ 3. 编写组件标签
+
+ -->
+<hr>
+<hr>
+<div id="root2">
+    <school></school>
+    <hr>
+    <hello></hello>
+    <hr>
+    <!-- 使用脚手架才能使用 自闭合 -->
+    <school/>
+</div>
+<script type="application/javascript">
+
+    /* 1.  创建组件 */
+    /* 使用 extend 来声明组件  其中和VUE相同 但是data必须使用函数式 */
+    /* 不允许使用 el */
+    const school = Vue.extend({
+        template: `
+          <div>
+          <h2>学校名称：{{ schoolName }}</h2>
+          <h2>学校地址：{{ address }}</h2>
+          <button @click="alert(schoolName)">显示</button>
+          </div>
+        `,
+        data() {
+            return {
+                schoolName: "",
+                address: "",
+            }
+        }
+    })
+
+    const student = Vue.extend({
+        /* 指定在开发者工具中显示的名称 */
+        name: "student",
+        template: `
+          <div>
+          <h2>学生名称：{{ studentName }}</h2>
+          <h2>学生年龄：{{ age }}</h2>
+          </div>
+        `,
+        data() {
+            return {
+                studentName: "",
+                age: 0,
+            }
+        }
+    })
+
+    const hello = Vue.extend({
+        template: `
+          <div>
+          <h2>{{ msg }}</h2>
+          </div>
+        `,
+        data() {
+            return {
+                msg: "",
+            }
+        }
+    })
+
+    /* 可以自己省略 Vue.extend 实际上由VUE将component 放入 Vue.extend 调用 可能会影响性能 */
+    const component = {
+        template: `
+          <div>
+          <h2>{{ msg }}</h2>
+          </div>
+        `,
+        data() {
+            return {
+                msg: "",
+            }
+        }
+    }
+
+    /* 全局注册 */
+    Vue.component("hello", hello)
+
+    new Vue({
+        el: "#root",
+        data: {
+            msg: "hello world",
+        },
+        /* 2.  注册组件 - 局部注册 */
+        components: {
+            /* kv模式  k指的是主界面  school是实际的组件 */
+            /* 组件名称使用 全小写 或者 -链接  或者 全大驼峰 */
+            /* 全大驼峰需要 脚手架 */
+            school: school,
+            person: student,
+            com: component,
+        }
+    })
+
+    /* 可以创建多个VUE */
+    new Vue({
+        el: "#root2",
+        components: {
+            /* 名称值相同可以缩写 */
+            school,
+        }
+    })
+</script>
+</body>
+</html>
