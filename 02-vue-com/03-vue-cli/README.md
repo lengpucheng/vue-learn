@@ -71,3 +71,8 @@ npm run build
 ```
 npm run lint
 ```
+
+
+## Vue-cli 配置文件
+在src同级目录下创建`vue.config.js`,按照如下的提示进行
+[VUE-CLI配置](https://cli.vuejs.org/zh/config/#lintonsave)

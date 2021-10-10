@@ -5,12 +5,13 @@
     <p>学生年龄:{{ myAge - 10 }}</p>
     <p>学生性别:{{ sex }}</p>
     <button @click="put">修改AGE</button>
+    <hr>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Student",
+  name: "People",
   data() {
     return {
       title: "Student",
@@ -55,6 +56,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<!--
+所有的css最终会汇总到一起  若冲突了则会被后引入的覆盖
+使用scoped 就可以人style在局部使用
+一般在App组件不使用scoped
+可以使用 lang来定义使用的语言  less 或 css
+-->
+<style scoped lang="less">
 
 </style>
