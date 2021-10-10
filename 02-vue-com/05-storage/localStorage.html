@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local</title>
+</head>
+<body>
+<h1>LocalStorage</h1>
+<p>LocalStorage 在浏览器关闭后依然存在 可以持久使用</p>
+<p>当且仅当清除缓存时才会清空</p>
+<div id="val"></div>
+<button onclick="saveData()">Save</button>
+<button onclick="readData()">Read</button>
+<button onclick="removeData()">Delete</button>
+<button onclick="clearData()">Clear</button>
+<script type="application/javascript">
+    let peo = {name: "张三", age: 23}
+
+    // 储存
+    function saveData() {
+        // 传入对象
+        let json = JSON.stringify(peo)
+        window.localStorage.setItem("peo", json)
+    }
+
+    // 读取
+    function readData() {
+        // 使用 Object.keys(localStorage) 可以获取所有key值
+        let json = window.localStorage.getItem("peo");
+        let peo = JSON.parse(json)
+        console.log(peo)
+
+        document.getElementById("val").innerText = json;
+    }
+
+    // 删除
+    function removeData() {
+        window.localStorage.removeItem("peo")
+    }
+
+    // 清空
+    function clearData() {
+        window.localStorage.clear()
+    }
+</script>
+</body>
+</html>

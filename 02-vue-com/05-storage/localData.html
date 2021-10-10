@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浏览器数据库</title>
+    <script type="application/javascript" src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="root" @keydown.enter="addData">
+    <h1>数据库存储</h1>
+    <hr>
+    <div>
+        <label>
+            Key:<input type="text" property="Key" v-model="key" @keydown.enter.stop="addData">
+        </label>
+        <label>
+            Value:<input type="text" property="value" v-model="value" @keydown.enter.stop="addData">
+        </label>
+        <button @click="addData">添加</button>
+    </div>
+    <hr>
+    <div>
+        <ul>
+            <li>key---value----opt</li>
+            <li v-show="!storage.length">当前数据为空</li>
+            <li v-for="data in storage" :key="data.key">
+                <input type="text" v-model="data.key"><input type="text" v-model="data.value">
+                <a @click.prevent="updateData(data)" href="#">更新</a>
+                <a @click.prevent="deleteData(data.key)" href="#">删除</a>
+            </li>
+        </ul>
+    </div>
+    <hr>
+    <p>共{{storage.length}}条数据</p>
+    <button @click="clear" v-show="storage.length">清空</button>
+</div>
+<script type="application/javascript">
+    function read() {
+        const data = []
+        Object.keys(localStorage).forEach(key => {
+            data.push({key: key, value: window.localStorage.getItem(key)})
+        })
+        return data
+    }
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            key: "",
+            value: "",
+            storage: [
+                {key: "", value: ""}
+            ]
+        },
+        methods: {
+            addData() {
+                if (!this.key.trim()) {
+                    alert("key 不能为空！")
+                    return
+                }
+                let data = {key: this.key.trim(), value: this.value.trim()}
+                window.localStorage.setItem(data.key, data.value)
+                this.storage = read()
+                this.key = ""
+                this.value = ""
+            },
+            deleteData(key) {
+                if (!key.trim()) {
+                    alert("key 不能为空！")
+                    return
+                }
+                if (!confirm("是否删除？")) {
+                    return;
+                }
+                window.localStorage.removeItem(key.trim())
+                this.storage = read()
+            },
+            updateData(data) {
+                if (!data && !data.key.trim()) {
+                    alert("key 不能为空！")
+                    return
+                }
+                window.localStorage.setItem(data.key, data.value)
+                this.storage = read()
+            },
+            clear() {
+                if (!confirm("是否清空？")) {
+                    return
+                }
+                window.localStorage.clear()
+                this.storage = read()
+            }
+        },
+        mounted() {
+            this.storage = read()
+        }
+    })
+</script>
+</body>
+</html>
