@@ -3,6 +3,7 @@
     <h2>学校名称：{{ name }}</h2>
     <h2>学校地址：{{ address }}</h2>
     <button @click="show">弹</button>
+    <button @click="sendApp">传给APP</button>
   </div>
 
 </template>
@@ -16,6 +17,13 @@ export default {
     return {
       name: "",
       address: "",
+    }
+  },
+  props: ["receive"],
+  methods: {
+    /* 使用 属性接收 来进行子父传参 */
+    sendApp() {
+      this.receive(this.name)
     }
   },
   /* 可以引入第三方或者公共库js  其中同名的会直接混合 不会覆盖 */

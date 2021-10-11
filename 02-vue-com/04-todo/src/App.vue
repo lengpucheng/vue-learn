@@ -40,6 +40,20 @@ export default {
         {id: "003", title: "打豆豆", done: false},
       ]
     }
+  },
+  // 监控todos 的变化
+  watch: {
+    todos: {
+      // 开启深度监控 监控内部属性的变化
+      deep: true,
+      handler(value) {
+        window.localStorage.setItem("todos", JSON.stringify(value))
+      }
+    },
+  },
+  mounted() {
+    // 若前者为空则使用 [] 空数组 避免空指针
+    this.todos = JSON.parse(window.localStorage.getItem("todos")) || []
   }
 }
 </script>

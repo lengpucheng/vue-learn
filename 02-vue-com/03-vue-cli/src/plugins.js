@@ -4,7 +4,7 @@ export default {
     /* 也可以自定义接收参数 */
     install(Vue, a, b,) {
         /* 可以使用Vue 给其添加全局配置 */
-        console.log("@@@@@@@@@install.....", Vue, a, b, c)
+        console.log("@@@@@@@@@install.....", Vue, a, b)
         // 全局过滤器
         // value 为 | 前的数据 还可以接收参数
         Vue.filter("slice", function (value) {
@@ -12,7 +12,7 @@ export default {
         })
 
         // 全局指令  element 是DOM  binding 是 value
-        Vue.direction('bing10', function (element, binding) {
+        Vue.directive('bing10', function (element, binding) {
             console.log(element)
             console.log(binding)
             element.innerText = binding.value * 10
