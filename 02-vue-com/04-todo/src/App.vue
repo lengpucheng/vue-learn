@@ -3,9 +3,9 @@
     <div class="todo-container">
       <div class="todo-wrap">
         <!--   也可以传函数     -->
-        <TodoHeader :reviver="reviver"/>
+        <TodoHeader @reviver="reviver"/>
         <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
-        <TodoFooter :todos="todos" :done="removeDone"/>
+        <TodoFooter :todos="todos" @done="removeDone"/>
       </div>
     </div>
   </div>

@@ -9,7 +9,6 @@ import {nanoid} from 'nanoid'
 
 export default {
   name: "TodoHeader",
-  props: ['reviver'],
   methods: {
     input() {
       if (!this.title.trim()) {
@@ -17,7 +16,8 @@ export default {
         return
       }
       const todo = {id: nanoid(), title: this.title.trim(), done: false}
-      this.reviver(todo)
+      // 使用自定义事件
+      this.$emit('reviver', todo)
       this.title = ""
     }
   },

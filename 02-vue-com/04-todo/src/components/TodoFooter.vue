@@ -13,7 +13,12 @@
 <script>
 export default {
   name: "TodoFooter",
-  props: ['todos', 'done'],
+  props: ['todos'],
+  methods: {
+    done() {
+      this.$emit("done")
+    }
+  },
   computed: {
     todoDone() {
       // 第一个参数为处理函数  第二个参数为初始值    处理函数会被调N次 N为数组元素
@@ -37,7 +42,7 @@ export default {
         }
       }
     },
-  }
+  },
 }
 </script>
 
