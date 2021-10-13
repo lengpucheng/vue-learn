@@ -4,7 +4,7 @@
       <div class="todo-wrap">
         <!--   也可以传函数     -->
         <TodoHeader @reviver="reviver"/>
-        <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
+        <TodoList :todos="todos"/>
         <TodoFooter :todos="todos" @done="removeDone"/>
       </div>
     </div>
@@ -22,7 +22,6 @@ export default {
   methods: {
     /* 将函数作为参数传给子 */
     reviver(todo) {
-      console.log("得到", todo)
       this.todos.push(todo)
     },
     deleteTodo(id) {
@@ -34,11 +33,7 @@ export default {
   },
   data() {
     return {
-      todos: [
-        {id: "001", title: "吃饭", done: true},
-        {id: "002", title: "睡觉", done: true},
-        {id: "003", title: "打豆豆", done: false},
-      ]
+      todos: []
     }
   },
   // 监控todos 的变化
@@ -54,6 +49,18 @@ export default {
   mounted() {
     // 若前者为空则使用 [] 空数组 避免空指针
     this.todos = JSON.parse(window.localStorage.getItem("todos")) || []
+    // 挂载全局事件
+    this.$root.$on("deleteTodo", (id) => {
+      this.deleteTodo(id)
+    })
+    this.$root.$on("editTodo", (n) => {
+      this.todos.forEach((todo) => {
+        if (n.id === todo.id) {
+          todo.title = n.title
+        }
+      })
+
+    })
   }
 }
 </script>
@@ -81,6 +88,17 @@ export default {
 .btn-danger:hover {
   color: #fff;
   background-color: #bd362f;
+}
+
+.btn-editor {
+  color: #fff;
+  background-color: #00a6d7;
+  border: 1px solid #22ccff;
+}
+
+.btn-editor:hover {
+  color: #fff;
+  background-color: #00a6d7;
 }
 
 .btn:focus {
