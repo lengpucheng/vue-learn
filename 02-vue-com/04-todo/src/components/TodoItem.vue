@@ -1,19 +1,21 @@
 <template>
-  <li>
-    <label>
-      <input type="checkbox" v-model="todo.done"/>
-      <!--  blur 为失去焦点    -->
-      <input type="text"
-             v-show="todo.isEdit"
-             :value="todo.title"
-             @blur="handleEdit(todo)"
-             @keydown.enter="handleEdit(todo)"
-             ref="editTodo">
-      <span v-show="!todo.isEdit">{{ todo.title }}</span>
-    </label>
-    <button class="btn btn-danger" @click="doDelete(todo.id)">删除</button>
-    <button v-show="!todo.isEdit" class="btn btn-editor" @click="doEdit(todo)">编辑</button>
-  </li>
+  <transition name="todo" appear>
+    <li>
+      <label>
+        <input type="checkbox" v-model="todo.done"/>
+        <!--  blur 为失去焦点    -->
+        <input type="text"
+               v-show="todo.isEdit"
+               :value="todo.title"
+               @blur="handleEdit(todo)"
+               @keydown.enter="handleEdit(todo)"
+               ref="editTodo">
+        <span v-show="!todo.isEdit">{{ todo.title }}</span>
+      </label>
+      <button class="btn btn-danger" @click="doDelete(todo.id)">删除</button>
+      <button v-show="!todo.isEdit" class="btn btn-editor" @click="doEdit(todo)">编辑</button>
+    </li>
+  </transition>
 </template>
 
 <script>
@@ -60,6 +62,38 @@ export default {
 </script>
 
 <style scoped>
+.todo-enter-active {
+  animation: todoEnter 0.25s linear;
+}
+
+.todo-leave-active {
+  animation: todoLeave 0.5s linear;
+}
+
+@keyframes todoEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+    background-color: cornflowerblue;
+  }
+  to {
+    opacity: 100%;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes todoLeave {
+  from {
+    transform: translateX(0);
+    background-color: #da4f49;
+    opacity: 100%;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
 /*item*/
 li {
   list-style: none;
