@@ -1,78 +1,82 @@
 <template>
-  <div>
-    <button @click="getStu">获取学生信息</button>
-    <p>{{stu}}</p>
+  <div class="container">
+    <Card>
+      <Category name="食物" :listData="foods">
+        <!--   自定义标签内的html 内容将 覆盖组件中的slot标签内容  若slot不存在则不会显示    -->
+        <img src="http://wtushop.hll520.cn/image/7.jpg" alt="美食"/>
+      </Category>
+      <Category name="游戏" :listData="games"/>
+      <Category name="电影" :listData="movies">
+        <iframe src="//player.bilibili.com/player.html?aid=804122638&bvid=BV1Zy4y1K7SH&cid=373348512&page=102"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      </Category>
+    </Card>
     <hr>
-    <button @click="getCar">获取Car</button>
-    <p>{{car}}</p>
+    <Card>
+      <CategoryName name="热门电影" :list-data="movies">
+        <h4 slot="head">热门电影</h4>
+        <h4 slot="footer"><a>点击观看</a></h4>
+      </CategoryName>
+      <CategoryName name="热门美食" :list-data="foods">
+        <!--  若使用 template 可以 使用 v-slot:name    -->
+        <template v-slot:box>
+          <img src="http://wtushop.hll520.cn/image/7.jpg" alt="美食"/>
+        </template>
+        <h4 slot="footer"><a>点击抢购</a></h4>
+      </CategoryName>
+    </Card>
+    <hr>
+    <Card>
+      <CategoryNS>
+        <!--   使用 scop 接收传入的数据 来自定义HTML解析     -->
+        <!--   scope 为名称  即 所有slot传输数据的对象     -->
+        <template scope="datas">
+          <ul v-for="data of datas.datas">
+            <li>{{ data }}</li>
+          </ul>
+        </template>
+      </CategoryNS>
+      <CategoryNS>
+        <template scope="datas">
+          <ol v-for="data of datas.datas">
+            <li>{{ data }}</li>
+          </ol>
+        </template>
+      </CategoryNS>
+      <CategoryNS>
+        <!--   使用 scop 接收传入的数据 来自定义HTML解析     -->
+        <template scope="datas">
+          <h4 v-for="data of datas.datas">{{ data }}</h4>
+        </template>
+      </CategoryNS>
+    </Card>
+
   </div>
 </template>
 
 <script>
-/* 引入Axios */
-import axios from 'axios'
+import Category from "./components/Category";
+import CategoryName from "./components/CategoryName";
+import CategoryNS from "./components/CategoryNS";
+import Card from "./components/Card";
 
 export default {
   name: "App",
-  data(){
+  data() {
     return {
-      stu:"",
-      car:"",
+      foods: ["鱼香肉丝", "宫保鸡丁", '土豆牛腩', '糖醋排骨'],
+      games: ['王者荣耀', ' 刺激战场 ', 'QQ飞车', '元神'],
+      movies: ['大决战', '大进军', '大转折', '开国大典', '功勋'],
     }
   },
-  components: {},
-  methods: {
-    getStu() {
-      /* CORS 规范
-      *  要求请求的  协议、域名 和 端口  一模一样
-      *  其中
-      *  请求已经发过去了，并且服务器收到了，但是由于跨域避免XSS 服务器不会返回结果
-      *
-      *  解决办法：
-      *  1. 服务端cors解决办法： 后端使用cors配置
-      *  2. 前端jsonp解决方案：jsonp 使用script 获取 get 脚本不受跨域限制 但是前后端都有修改 且只能使用get
-      *  3. 使用代理服务器: nginx代理 即前端和和代理服务器同源，代理服务器和后端使用纯的http不受跨域限制
-      *     3.1 nginx开启代理服务器
-      *     3.2 使用 vue-cli开启代理服务器  修改 vue.config.js文件
-      *  */
-      /* 使用代理代理服务器后 直接用 8080 */
-      axios.get('http://localhost:8080/api/v1/students').then(
-          /* 成功回调 */
-          response => {
-            /*
-            * response 为请求结果对象
-            * .data 才是请求结果
-            *  */
-            console.log('请求成功', response.data)
-            this.stu=response.data
-          },
-          /* 异常回调 */
-          error => {
-            /*
-            * error 为错误对象
-            * .message 为错误信息
-            * */
-            console.log('请求失败', error.message)
-            this.stu=error.message
-          }
-      )
-    },
-    getCar() {
-      axios.get('http://localhost:8080/api/v2/cars').then(
-          response => {
-            console.log(response.data)
-            this.car=response.data
-          },
-          error => {
-            console.log(error.message)
-            this.car=error.message
-          }
-      )
-    }
-  }
+  components: {
+    CategoryNS,
+    CategoryName,
+    Category,
+    Card
+  },
 }
 </script>
 
 <style scoped>
-
 </style>
