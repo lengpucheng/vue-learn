@@ -1,62 +1,65 @@
 import VueRouter from 'vue-router'
+import News from "../pages/News";
+import Configer from "../pages/Configer";
 import About from "../pages/About";
-import Home from "../pages/Home";
-import Vue from "vue";
-import HomeNews from "../pages/HomeNews";
-import HomeMessage from "../pages/HomeMessage";
-import Detail from "../pages/Detail";
+import ShowList from "../pages/ShowList";
+import Login from "../pages/Login";
 
-Vue.use(VueRouter)
-// 创建路由器
-export default new VueRouter({
+const router = new VueRouter({
     routes: [
-        /* 创建路由 */
         {
-            path: '/about',
-            component: About,
+            name: 'News',
+            path: '/news',
+            component: News,
+            meta: {title: '新闻'}
         },
         {
-            path: '/home',
-            component: Home,
-            /* 配置子路由 */
-            children: [
-                /* 多级路由 会自动 补充 / */
-                {
-                    path: 'message',
-                    component: HomeMessage,
-                    children: [
-                        {
-                            /* 使用name别名 可以使用 对象方式直接跳转 */
-                            name: "Detail",
-                            path: 'detail',
-                            component: Detail
-                        },
-                        {
-                            name: "DetailPath",
-                            /* 使用 path 传递参数 */
-                            path: 'detail/:id/:title',
-                            component: Detail,
-                            /* 第一种写法  这里的props 会以 props的形式传给 Detail组件  */
-                            // props:{id:'01',title:"xxx"}
-                            /* 若 props为真则会把所有的 params参数以props 形式传递给组件  */
-                            // props: true
-                            /* 函数写法 参数是 route对象 可以预先赋值后传给 组件 */
-                            /*props(route) {
-                                return {id: route.query.id, title: route.params.title}
-                            }*/
-                            /* 使用解构赋值来写 --- 解构赋值 可以将一个对象解开留下仅限于的字段 可以连续嵌套 */
-                            props({query, params}) {
-                                return {id: query.id|params.id, title: query.title|params.title}
-                            }
-                        }
-                    ]
-                },
-                {
-                    path: 'news',
-                    component: HomeNews,
-                }
-            ]
+            name: 'Configer',
+            path: '/config',
+            component: Configer,
+            meta: {title: '配置'}
+        },
+        {
+            name: 'About',
+            path: '/about',
+            component: About,
+            meta: {title: '关于',open: true}
+        },
+        {
+            name: 'ShowList',
+            path: '/list',
+            component: ShowList,
+            meta: {title: '数据浏览'}
+        },
+        {
+            name: 'Login',
+            path: '/login',
+            component: Login,
+            meta: {title: '登录', open: true}
         }
-
-    ]
+    ],
 })
+
+/* 前置路由首位  在页面跳转前执行 */
+router.beforeEach((to, from, next) => {
+    if (!to.meta.open && to.path !== '/') {
+        // 如果是非开放页面就拦截
+        if (window.localStorage.getItem("user") !== "true") {
+            alert("请先登录")
+            // 修改登录方向
+            to.name='login'
+            to.path='/login'
+            this.push('login')
+            return
+        }
+    }
+    /* 执行next函数将继续执行 */
+    next()
+})
+
+/* 后置路由首位 在页面跳转后执行 */
+router.afterEach((to, from) => {
+    document.title = to.meta.title || 'Manage'
+})
+
+export default router
