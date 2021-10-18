@@ -36,6 +36,8 @@ export default {
         window.localStorage.setItem("name", this.name)
         window.localStorage.setItem("pass", this.password)
         window.localStorage.setItem("user", "true")
+        this.name = ""
+        this.password = ""
         alert("登录成功")
         /* 与默认的go类似 */
         // this.$router.go(-1)
@@ -48,6 +50,23 @@ export default {
       } else {
         alert("用户名和密码不能为空")
       }
+    }
+  },
+  /* 组件路由首位
+  *  当仅通过路由进入组件 后 生效
+  *  */
+  beforeRouteEnter(to, from, next) {
+    alert("欢迎登录")
+    next()
+  },
+  /*
+  *  当通过路由离开组件 前 生效
+  * */
+  beforeRouteLeave(to, from, next) {
+    if (this.name && confirm("当前还有未保存的数据是否离开")) {
+      next()
+    } else if (!this.name) {
+      next()
     }
   }
 }

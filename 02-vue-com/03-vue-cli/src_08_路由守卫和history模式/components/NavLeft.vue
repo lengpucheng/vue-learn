@@ -10,7 +10,7 @@
       </li>
     </ul>
     <a href="#">
-      <button class="btn btn-danger" style="width: 100%">
+      <button class="btn btn-danger" style="width: 100%" @click="logout">
         退出登录
       </button>
     </a>
@@ -37,16 +37,22 @@ export default {
           {name: '优酷', path: 'https://youku.com'},
           {name: 'CCTV', path: 'https://cctv.com'},
         ],
-      ]
-    }
-  },
-  computed: {
-    user() {
-      return {
-        name: localStorage.getItem("name"),
+      ],
+      user: {
+        name: "",
         id: "#"
       }
     }
+  },
+  methods: {
+    logout() {
+      window.localStorage.setItem("name", "")
+      window.localStorage.setItem("user", "")
+      alert("退出登录")
+    }
+  },
+  mounted() {
+    this.user.name = localStorage.getItem("name")
   }
 }
 </script>
@@ -55,7 +61,8 @@ export default {
 li:hover {
   background-color: #00a6d7;
 }
-.active{
+
+.active {
   background-color: #66afe9;
 }
 </style>

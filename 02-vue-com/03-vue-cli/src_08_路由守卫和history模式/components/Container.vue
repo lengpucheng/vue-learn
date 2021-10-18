@@ -6,7 +6,7 @@
         <!--  使用keep alive 包裹的 组件被切走后不会被销毁会被缓存        -->
         <!--   可以使用 include 来表明那些组件可以被缓存 若不使用则所有都会缓存     -->
         <!--    name为组件名  对应VUE中的 name    -->
-        <keep-alive :include="['Login','Configer']">
+        <keep-alive :include="['Login','Configer','News']">
           <router-view>
             <h1>欢迎使用</h1>
           </router-view>

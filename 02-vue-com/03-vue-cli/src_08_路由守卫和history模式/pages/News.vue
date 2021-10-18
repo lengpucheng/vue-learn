@@ -24,13 +24,15 @@ export default {
       time: 0
     }
   },
-  /* route的生命周期 当组件被激活时 */
+  /* route的生命周期 当组件被激活时
+  *  只要当 keep-alive 时才生效
+  * */
   activated() {
     console.log("新闻激活")
     this.inter = setInterval(() => {
       this.time++
       console.log("@@")
-    }, 10)
+    }, 500)
   },
   /* 当组件激活取消时  若缓存组件 则不会调用销毁 但会调用这个 */
   deactivated() {
